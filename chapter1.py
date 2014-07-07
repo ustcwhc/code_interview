@@ -24,8 +24,137 @@ def reverse_string(input_str):
     chars = list(input_str)
     return ''.join(reversed(chars))
 
+# PROBLEM 1.4
+# Check whether two strings are anagram
+def are_anagrams(str1, str2):
+    if len(str1) != len(str2):
+        return False
+
+    map1 = {}
+    map2 = {}
+
+    for c in str1:
+        if map1.has_key(c):
+            map1[c] += 1
+        else:
+            map1[c] = 1
+
+    for c in str2:
+        if map2.has_key(c):
+            map2[c] += 1
+        else:
+            map2[c] = 1
+
+    for key, value in map1.items():
+        if not map2.has_key(key) or map2[key] != value:
+            return False;
+
+    for key, value in map2.items():
+        if not map1.has_key(key) or map1[key] != value:
+            return False
+    
+    return True
+
+
+# PROBLEM 1.5
+# Replace space with '%20'
+def replace_space(input_str):
+    return str.replace(input_str, ' ', '%20')
+
+# PROBLEM 1.6
+# Rotate matrix
+def rotate_matrix(matrix, clockwise=True):
+    print 'Before rotate:'
+    for row in matrix:
+        print row
+
+    row_count = len(matrix)
+    column_count = len(matrix[0])
+    if(row_count != column_count):
+        print 'the matrix is not NxN'
+        return None
+
+    half = (row_count + 1) / 2
+    print 'N=%d, half=%d'% (row_count, half)
+    for i in range(half):
+        for j in range(half):
+            if(clockwise):
+                #NW
+                nw_temp = matrix[i][j]
+
+                #SW
+                sw_i = row_count - j - 1
+                sw_j = i 
+                matrix[i][j] = matrix[sw_i][sw_j]
+
+                #SE
+                se_i = row_count - i - 1
+                se_j = row_count - j - 1
+                matrix[sw_i][sw_j] = matrix[se_i][se_j]
+
+                #NE
+                ne_i = j
+                ne_j = row_count - i - 1
+                matrix[se_i][se_j] = matrix[ne_i][ne_j]
+                matrix[ne_i][ne_j] = nw_temp
+            else:
+                print 'Not implemented'
+                return None
+
+    print 'after rotate:'
+    for row in matrix:
+        print row
+    
+    return matrix
+
+
+# PROBLEM 1.7
+# if an element in matrix is 0, then set all element as 0
+def set_matrix_0_if_contains_0(matrix):
+    contain_0 = False
+    for row in matrix:
+        for column in row:
+            if column == 0:
+                contain_0 = True
+                break
+        
+        if(contain_0):
+            break
+
+    print 'Before set 0'
+    for row in matrix:
+        print row
+
+    if (contain_0):
+        row_count = len(matrix)
+        column_count = len(matrix[0])
+        for i in range(row_count):
+            for j in range(column_count):
+                matrix[i][j] = 0
+
+        print 'After set 0'
+        for row in matrix:
+            print row
+
+
+# PROBLEM 1.8
+# check whether a string a rotation of another string. e.g. 'waterbottle' is a ratation of 'erbottlewat'
+def check_ratation(str1, str2):
+    if len(str1) != len(str2):
+        return False
+    length = len(str1)
+    for i in range(length):
+        str1 = move_left(str1)
+        if str1 == str2:
+            return True
+    return False
+
+def move_left(str1):
+    return str1[1:] + str1[0]
+
+
 # MAIN FUNCTION
 if __name__ == "__main__":
-    print reverse_string('abcdefg')
-
-
+    str1 = 'waterbottle'
+    str2 = 'erbottlewat'
+    print check_ratation(str1, str2)
