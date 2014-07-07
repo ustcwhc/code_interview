@@ -111,30 +111,29 @@ def rotate_matrix(matrix, clockwise=True):
 # PROBLEM 1.7
 # if an element in matrix is 0, then set all element as 0
 def set_matrix_0_if_contains_0(matrix):
-    contain_0 = False
-    for row in matrix:
-        for column in row:
-            if column == 0:
-                contain_0 = True
-                break
-        
-        if(contain_0):
-            break
+    row_count = len(matrix)
+    column_count = len(matrix[0])
+    row_0s = [False] * row_count
+    column_0s = [False] * column_count
+
+    for row in range(row_count):
+        for column in range(column_count):
+            if matrix[row][column] == 0:
+                row_0s[row] = True
+                column_0s[column] = True
 
     print 'Before set 0'
     for row in matrix:
         print row
 
-    if (contain_0):
-        row_count = len(matrix)
-        column_count = len(matrix[0])
-        for i in range(row_count):
-            for j in range(column_count):
+    for i in range(row_count):
+        for j in range(column_count):
+            if row_0s[i] or column_0s[j]:
                 matrix[i][j] = 0
 
-        print 'After set 0'
-        for row in matrix:
-            print row
+    print 'After set 0'
+    for row in matrix:
+        print row
 
 
 # PROBLEM 1.8
@@ -142,15 +141,9 @@ def set_matrix_0_if_contains_0(matrix):
 def check_ratation(str1, str2):
     if len(str1) != len(str2):
         return False
-    length = len(str1)
-    for i in range(length):
-        str1 = move_left(str1)
-        if str1 == str2:
-            return True
-    return False
+    str2str2 = str2 + str2
+    return str1 in str2str2 
 
-def move_left(str1):
-    return str1[1:] + str1[0]
 
 
 # MAIN FUNCTION
