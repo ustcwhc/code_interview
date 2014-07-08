@@ -160,6 +160,22 @@ class ArrayStack(object):
         else:
             print 'There is no element'
             return -1
+
+# PROBLEM 3.3
+# Implement a set a stacks, which contains several stacks, when one stack is full
+# then move to another stack
+class SetOfStackes(object):
+    def __init__(self, max_count):
+        self._max_count = max_count
+        self._stacks = []
+
+        array = [0] * max_count
+        self._stacks.append(ArrayStack(array, 0, max_count))
+        self._cur_stack = 0
+
+    def push(self, item):
+
+                
 # MAIN FUNCTION
 if __name__ == '__main__':
     length = 100
