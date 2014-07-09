@@ -109,11 +109,11 @@ class ArrayStack(object):
     def __init__(self, array, start_index, max_count):
         # error
         if start_index < 0 or start_index >= len(array):
-            raise 'Start index is out of range of array'
+            raise Exception('Start index is out of range of array')
         if max_count <= 0:
-            raise 'max count of stack is not positive'
+            raise Exception('max count of stack is not positive')
         if start_index + max_count - 1 >= len(array):
-            raise 'end index is out of range of array'
+            raise Exception('end index is out of range of array')
 
         self._array = array
         self._start_index = start_index
@@ -151,6 +151,15 @@ class ArrayStack(object):
             self._head_index -= 1
             self.Count -= 1
             return top
+
+    def peek(self):
+        if self.Count == 0:
+            return None
+        else:
+            return self._array[self._head_index]
+
+    def print_arraystack(self):
+        print self._array[:self.Count]
 
 # PROBLEM 3.2
 # Get the minimum element in O(1) time
@@ -195,7 +204,7 @@ class SetOfStacks(object):
 
     def pop_at(self, index):
         if index > self._cur_stack:
-            raise 'input index is out of range of the stacks'
+            raise Exception('input index is out of range of the stacks')
         else:
             return self._stacks[index].pop()
           
@@ -207,51 +216,186 @@ class SetOfStacks(object):
                 print '|',
         print
 
+
+# PROBLEM 3.4
+# Implement the movement algorithm for Towers of Hanoi, 
+# which contains 3 rods and N disks
+class Hanoi(object):
+    def __init__(self, n):
+        array1 = [0] * n
+        array2 = [0] * n
+        array3 = [0] * n
+
+        self._stack1 = ArrayStack(array1, 0, n)
+        self._stack2 = ArrayStack(array2, 0, n)
+        self._stack3 = ArrayStack(array3, 0, n)
+
+        self._stack1.push(3)
+        self._stack1.push(2)
+        self._stack1.push(1)
+
+        print 'Before moving:'
+        self.print_stacks()
+
+    def move_1_to_3(self, n):
+        # error detection
+        if self._stack1.Count < n:
+            raise Exception('There are no %d disks on stack1'%d, n)
+
+        if n == 1:
+            self.move_1_to_2(1)
+            self.move_2_to_3(1)
+        else:
+            # step1: move top n-1 disks from stack1 to stack3
+            self.move_1_to_3(n - 1)
+
+            # step2: move last disk from stack1 to stack2
+            self.move_1_to_2(1)
+
+            # step3: move top n-1 disks from stack3 to stack1
+            self.move_3_to_1(n - 1)
+
+            # step4: move last disk from stack2 to stack3
+            self.move_2_to_3(1)
+
+            # step5: move top n-1 disks from stack1 to stack3
+            self.move_1_to_3(n - 1)
+
+        # finished
+        self.print_stacks()
+
+    def move_1_to_2(self, n):
+        # error detection
+        if self._stack1.Count < n:
+            raise Exception('There are no %d disks on stack1'%d, n)
+        
+        if n == 1:
+            top = self._stack1.pop()
+            if (self._stack2.Count <= 0 or top < self._stack2.peek()):
+                self._stack2.push(top)
+            else:
+                raise Exception('Error movement of %d on %d'% (top, self._stack2.peek()))
+        else:
+            # step1: move top n-1 disks from stack1 to stack3
+            self.move_1_to_3(n - 1)
+
+            # step2: move last disk from stack1 to stack2
+            self.move_1_to_2(1)
+
+            # step3: move top n-1 disks from stack3 to stack2
+            self.move_3_to_2(n - 1)
+
+        # finished
+        self.print_stacks()
+
+    def move_2_to_1(self, n):
+        # error detection
+        if self._stack2.Count < n:
+            raise Exception('There are no %d disks on stack2'%d, n)
+       
+        if n == 1:
+            top = self._stack2.pop()
+            if (self._stack1.Count <= 0 or top < self._stack1.peek()):
+                self._stack1.push(top)
+            else:
+                raise Exception('Error movement of %d on %d'% (top, self._stack1.peek()))
+        else: 
+            # step1: move top n-1 disks from stack2 to stack3
+            self.move_2_to_3(n - 1)
+
+            # step2: move last disk from stack2 to stack1
+            self.move_2_to_1(1)
+
+            # step3: move top n-1 disks from stack3 to stack1
+            self.move_3_to_1(n - 1)
+
+        # finished
+        self.print_stacks()
+
+    def move_2_to_3(self, n):
+        # error detection
+        if self._stack2.Count < n:
+            raise Exception('There are no %d disks on stack2'%d, n)
+        
+        if n == 1:
+            top = self._stack2.pop()
+            if (self._stack3.Count <= 0 or top < self._stack3.peek()):
+                self._stack3.push(top)
+            else:
+                raise Exception('Error movement of %d on %d'% (top, self._stack3.peek()))
+        else: 
+            # step1: move top n-1 disks from stack2 to stack1
+            self.move_2_to_1(n - 1)
+
+            # step2: move last disk from stack2 to stack3
+            self.move_2_to_3(1)
+
+            # step3: move top n-1 disks from stack1 to stack3
+            self.move_1_to_3(n - 1)
+
+        # finished
+        self.print_stacks()
+
+    def move_3_to_2(self, n):
+        # error detection
+        if self._stack3.Count < n:
+            raise Exception('There are no %d disks on stack3'%d, n)
+        
+        if n == 1:
+            top = self._stack3.pop()
+            if (self._stack2.Count <= 0 or top < self._stack2.peek()):
+                self._stack2.push(top)
+            else:
+                raise Exception('Error movement of %d on %d'% (top, self._stack2.peek()))
+        else: 
+            # step1: move top n-1 disks from stack3 to stack1
+            self.move_3_to_1(n - 1)
+
+            # step2: move last disk from stack3 to stack2
+            self.move_3_to_2(1)
+
+            # step3: move top n-1 disks from stack1 to stack2
+            self.move_1_to_2(n - 1)
+
+        # finished
+        self.print_stacks()
+
+    def move_3_to_1(self, n):
+        # error detection
+        if self._stack3.Count < n:
+            raise Exception('There are no %d disks on stack3'%d, n)
+
+        if n == 1:
+            self.move_3_to_2(1)
+            self.move_2_to_1(1)
+        else:
+            # step1: move top n-1 disks from stack3 to stack1
+            self.move_3_to_1(n - 1)
+
+            # step2: move last disk from stack3 to stack2
+            self.move_3_to_2(1)
+
+            # step3: move top n-1 disks from stack1 to stack3
+            self.move_1_to_3(n - 1)
+
+            # step4: move last disk from stack2 to stack1
+            self.move_2_to_1(1)
+
+            # step5: move top n-1 disks from stack3 to stack1
+            self.move_3_to_1(n - 1)
+
+        # finished
+        self.print_stacks()
+
+    def print_stacks(self):
+        print '------------'
+        self._stack1.print_arraystack()
+        self._stack2.print_arraystack()
+        self._stack3.print_arraystack()
+
+# PROBLEM 3.5
+# Implement a MyQueue class which implement by two stacks
 # MAIN FUNCTION
 if __name__ == '__main__':
-    max_count = 2
-    setofstacks = SetOfStacks(max_count)
-
-    print 'normal push'
-    setofstacks.push(1)
-    setofstacks.print_stacks()
-    setofstacks.push(2)
-    setofstacks.print_stacks()
-    setofstacks.push(3)
-    setofstacks.print_stacks()
-    setofstacks.push(4)
-    setofstacks.print_stacks()
-    setofstacks.push(5)
-    setofstacks.print_stacks()
-    setofstacks.push(6)
-    setofstacks.print_stacks()
-    setofstacks.push(7)
-    setofstacks.print_stacks()
-    setofstacks.push(8)
-    setofstacks.print_stacks()
-    setofstacks.push(9)
-    setofstacks.print_stacks()
-
-    print 'normal pop'
-    setofstacks.pop()
-    setofstacks.print_stacks()
-    setofstacks.pop()
-    setofstacks.print_stacks()
-
-    print 'pop at index'
-    setofstacks.pop_at(1)
-    setofstacks.print_stacks()
-    setofstacks.pop_at(2)
-    setofstacks.print_stacks()
-    setofstacks.pop_at(1)
-    setofstacks.print_stacks()
-
-    print 'normal pop'
-    setofstacks.pop()
-    setofstacks.print_stacks()
-    setofstacks.pop()
-    setofstacks.print_stacks()
-    setofstacks.pop()
-    setofstacks.print_stacks()
-    setofstacks.pop()
-    setofstacks.print_stacks()
+    hanoi = Hanoi(3)
+    hanoi.move_1_to_3(3)
