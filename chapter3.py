@@ -164,35 +164,94 @@ class ArrayStack(object):
 # PROBLEM 3.3
 # Implement a set a stacks, which contains several stacks, when one stack is full
 # then move to another stack
-class SetOfStackes(object):
+class SetOfStacks(object):
     def __init__(self, max_count):
         self._max_count = max_count
         self._stacks = []
 
-        array = [0] * max_count
-        self._stacks.append(ArrayStack(array, 0, max_count))
+        self._stacks.append(ArrayStack([0] * max_count, 0, max_count))
         self._cur_stack = 0
 
     def push(self, item):
+        if not self._stacks[self._cur_stack].push(item):
+            self._stacks.append(ArrayStack([0] * max_count, 0, max_count))
+            self._cur_stack += 1
+            self._stacks[self._cur_stack].push(item)
+        
+        return True
 
-                
+    def pop(self):
+        top = self._stacks[self._cur_stack].pop()
+        while not top and self._cur_stack > 0:
+            self._cur_stack -= 1
+            top = self._stacks[self._cur_stack].pop()
+
+        if top:
+            return top
+        elif self._cur_stack == 0:
+            return self._stacks[0].pop()
+        else:
+            return None
+
+    def pop_at(self, index):
+        if index > self._cur_stack:
+            raise 'input index is out of range of the stacks'
+        else:
+            return self._stacks[index].pop()
+          
+    def print_stacks(self):
+        for i in range(self._cur_stack + 1):
+            for j in range(self._stacks[i].Count):
+                print self._stacks[i]._array[j],
+            if self._stacks[i].Count > 0:
+                print '|',
+        print
+
 # MAIN FUNCTION
 if __name__ == '__main__':
-    length = 100
-    array = [i for i in range(100)]
-    step = length / 3
-    start1 = 0
-    length1 = step
-    start2 = start1 + length1
-    length2 = step
-    start3 = start2 + length2
-    length3 = length - length1 - length2
+    max_count = 2
+    setofstacks = SetOfStacks(max_count)
 
-    stack1 = ArrayStack(array, start1, length1)
-    stack2 = ArrayStack(array, start2, length2)
-    stack3 = ArrayStack(array, start3, length3)
+    print 'normal push'
+    setofstacks.push(1)
+    setofstacks.print_stacks()
+    setofstacks.push(2)
+    setofstacks.print_stacks()
+    setofstacks.push(3)
+    setofstacks.print_stacks()
+    setofstacks.push(4)
+    setofstacks.print_stacks()
+    setofstacks.push(5)
+    setofstacks.print_stacks()
+    setofstacks.push(6)
+    setofstacks.print_stacks()
+    setofstacks.push(7)
+    setofstacks.print_stacks()
+    setofstacks.push(8)
+    setofstacks.print_stacks()
+    setofstacks.push(9)
+    setofstacks.print_stacks()
 
-    stack2.push(1)
-    stack2.push(10)
-    stack2.push(100)
-    print stack2.get_min()
+    print 'normal pop'
+    setofstacks.pop()
+    setofstacks.print_stacks()
+    setofstacks.pop()
+    setofstacks.print_stacks()
+
+    print 'pop at index'
+    setofstacks.pop_at(1)
+    setofstacks.print_stacks()
+    setofstacks.pop_at(2)
+    setofstacks.print_stacks()
+    setofstacks.pop_at(1)
+    setofstacks.print_stacks()
+
+    print 'normal pop'
+    setofstacks.pop()
+    setofstacks.print_stacks()
+    setofstacks.pop()
+    setofstacks.print_stacks()
+    setofstacks.pop()
+    setofstacks.print_stacks()
+    setofstacks.pop()
+    setofstacks.print_stacks()
