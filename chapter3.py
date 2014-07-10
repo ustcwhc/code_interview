@@ -463,6 +463,7 @@ class MyQueue(object):
 
 # PROBLEM 3.5
 # use only push(), pop(), peek(), is_empty() to sort a stack in desending order
+# SOLUTION 1 O(nlogn)
 def sort_stack(stack):
     if stack.is_empty():
         return stack
@@ -488,24 +489,33 @@ def sort_stack(stack):
     sorted_small_stack = sort_stack(small_stack)
     sorted_big_stack = sort_stack(big_stack)
 
-    while not sorted_big_stack.is_empty():
-        stack.push(sorted_big_stack.pop())
+    while not sorted_small_stack.is_empty():
+        stack.push(sorted_small_stack.pop())
 
     stack.push(mid)
 
-    while not sorted_small_stack.is_empty():
-        stack.push(sorted_small_stack.pop())
+    while not sorted_big_stack.is_empty():
+        stack.push(sorted_big_stack.pop())
 
     reverse_array = [0] * stack._max_count
     reverse_stack = ArrayStack(reverse_array, 0, stack._max_count)
     while not stack.is_empty():
         reverse_stack.push(stack.pop())
         
-    return reverse_stack
+    return reverse_stack        
 
-        
-        
+# SOLUTION 2 O(n^2)
+def sort_stack2(stack):
+    array = [0] * stack._max_count
+    stack2 = ArrayStack(array, 0, stack._max_count)
 
+    while not stack.is_empty():
+        top = stack.pop()
+        while not stack2.is_empty() and stack2.peek() > top:
+            stack.push(stack2.pop())
+        stack2.push(top)
+
+    return stack2
 
 # MAIN FUNCTION
 if __name__ == '__main__':
@@ -525,4 +535,4 @@ if __name__ == '__main__':
     stack.push(6)
 
     stack.print_arraystack()
-    sort_stack(stack).print_arraystack()
+    sort_stack2(stack).print_arraystack()
