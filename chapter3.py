@@ -65,6 +65,9 @@ class Stack(object):
         return self._head
 
 
+    def is_empty(self):
+        return self.Count == 0
+
 # QUEUE CLASS
 class Queue(object):
     def __init__(self):
@@ -102,6 +105,8 @@ class Queue(object):
     def peek(self):
         return self._head
 
+    def is_empty(self):
+        return self.Count == 0
 
 # PROBLEM 3.1
 # Using a single array to implement three stacks
@@ -160,6 +165,9 @@ class ArrayStack(object):
 
     def print_arraystack(self):
         print self._array[:self.Count]
+
+    def is_empty(self):
+        return self.Count == 0
 
 # PROBLEM 3.2
 # Get the minimum element in O(1) time
@@ -395,7 +403,126 @@ class Hanoi(object):
 
 # PROBLEM 3.5
 # Implement a MyQueue class which implement by two stacks
+class MyQueue(object):
+    def __init__(self, max_count):
+        self._max_count = max_count
+        
+        array1 = [0] * max_count
+        array2 = [0] * max_count
+
+        self._stack1 = ArrayStack(array1, 0, max_count)
+        self._stack2 = ArrayStack(array2, 0, max_count)
+        self.Count = 0
+
+    def enqueue(self, n):
+        self._dump()
+
+        print 'enqueue', n
+        if self._stack1.Count >= self._max_count:
+            raise Exception('The queue is full, cannot add more items')
+        else:
+            self._stack1.push(n)
+
+    def dequeue(self):
+        self._dump()
+
+        print 'dequeue'
+        if self._stack2.Count == 0:
+            raise Exception('There is no item in the queue')
+        else:
+            return self._stack2.pop()
+
+    def peek(self):
+        self._dump()
+
+        if self._stack2.Count == 0:
+            raise Exception('There is no item in the queue')
+        else:
+            return self._stack2.peek()
+
+    def _dump(self):
+        # when stack2 contains no items, 
+        if self._stack2.Count == 0:
+            while self._stack1.Count > 0:
+                top = self._stack1.pop()
+                self._stack2.push(top)
+
+    def print_queue(self):
+        i = self._stack2.Count - 1
+        while i >= 0:
+            print self._stack2._array[i],
+            i -= 1
+
+        i = 0
+        while i < self._stack1.Count:
+            print self._stack1._array[i],
+            i += 1
+
+        print
+
+
+# PROBLEM 3.5
+# use only push(), pop(), peek(), is_empty() to sort a stack in desending order
+def sort_stack(stack):
+    if stack.is_empty():
+        return stack
+
+    mid = stack.pop()
+    if stack.is_empty():
+        stack.push(mid)
+        return stack
+
+    small_array = [0] * stack._max_count
+    big_array = [0] * stack._max_count
+    small_stack = ArrayStack(small_array, 0, stack._max_count)
+    big_stack = ArrayStack(big_array, 0, stack._max_count)
+
+    while not stack.is_empty():
+        top = stack.pop()
+        if top >= mid:
+            big_stack.push(top)
+        else:
+            small_stack.push(top)
+
+
+    sorted_small_stack = sort_stack(small_stack)
+    sorted_big_stack = sort_stack(big_stack)
+
+    while not sorted_big_stack.is_empty():
+        stack.push(sorted_big_stack.pop())
+
+    stack.push(mid)
+
+    while not sorted_small_stack.is_empty():
+        stack.push(sorted_small_stack.pop())
+
+    reverse_array = [0] * stack._max_count
+    reverse_stack = ArrayStack(reverse_array, 0, stack._max_count)
+    while not stack.is_empty():
+        reverse_stack.push(stack.pop())
+        
+    return reverse_stack
+
+        
+        
+
+
 # MAIN FUNCTION
 if __name__ == '__main__':
-    hanoi = Hanoi(3)
-    hanoi.move_1_to_3(3)
+    max_count = 11
+    array = [0] * max_count
+    stack = ArrayStack(array, 0, max_count)
+    stack.push(9)
+    stack.push(3)
+    stack.push(7)
+    stack.push(5)
+    stack.push(4)
+    stack.push(1)
+    stack.push(3)
+    stack.push(10)
+    stack.push(12)
+    stack.push(8)
+    stack.push(6)
+
+    stack.print_arraystack()
+    sort_stack(stack).print_arraystack()
