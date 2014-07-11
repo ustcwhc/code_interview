@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # filename: chapter4.py
 
-# CLASS
+# TREE CLASS
 class Tree(object):
     def __init__(self, n):
         self.Parent = None
@@ -138,6 +138,75 @@ class Tree(object):
             self.RightChild.print_tree()
         print ')',
 
+# ENUM CLASS
+class VisitStates:
+    UnVisited = '0'
+    Visited = '1'
+
+# GRAPH CLASS
+class GraphNode(object):
+    def __init__(self, data):
+        self.Data = data
+        self.Neighbors = []
+        self.VisitState = VisitStates.UnVisited
+
+
+# PROBLEM 4.1
+# check whether a tree is balanced
+### return the depth of the tree
+### leaf return 1
+### not balanced return -1
+def get_balance_dept(tree):
+    if not tree:
+        return 0
+    else:
+        left_dept = get_balance_dept(tree.LeftChild)
+        if left_dept < 0:
+            return -1
+
+        right_dept = get_balance_dept(tree.RightChild)
+        if right_dept < 0:
+            return -1
+
+        if abs(left_dept - right_dept) > 1:
+            return -1
+
+        return max(left_dept, right_dept) + 1 
+            
+# PROBLEM 4.2
+# check whether two nodes has a route in a graph
+def has_route(all_nodes, start, end):
+    if start == end:
+        return True
+
+    for node in all_nodes:
+        node.VisitState = VisitStates.UnVisited
+
+    queue = []
+    queue.append(start)
+
+    while len(queue) > 0:
+        node = queue.pop(0)
+        for neighbor in node.Neighbors:
+            if neighbor.VisitState == VisitStates.UnVisited:
+                # found
+                if neighbor == end:
+                    return True
+                else:
+                    neighbor.VisitState = VisitStates.Visited
+                    queue.append(neighbor)
+
+    # not found
+    return False
+
+
+# PROBLEM 4.3
+# Given an asending array, create a binary tree with minimum height
+def create_tree_with_asc(asc_array):
+    length = len(asc_array)
+    index_double_queue = []
+    start = 0
+    end = length - 1
 
 # MAIN FUNCTION
 if __name__ == '__main__':
@@ -146,8 +215,6 @@ if __name__ == '__main__':
     node8 = Tree(8)
     node2 = Tree(2)
     node5 = Tree(5)
-    node45 = Tree(4.5)
-    node46 = Tree(4.6)
     node7 = Tree(7)
     node9 = Tree(9)
 
@@ -155,14 +222,17 @@ if __name__ == '__main__':
     root6.insert(node8)
     root6.insert(node2)
     root6.insert(node5)
-    root6.insert(node45)
-    root6.insert(node46)
     root6.insert(node7)
     root6.insert(node9)
+
     root6.print_tree()
-
+    print get_balance_dept(root6)
+    
     root6.delete(root6).print_tree()
-    root6.delete(root6).print_tree()
+    print get_balance_dept(root6)
 
-    print
-    root6.find(6).print_tree() 
+    root6.delete(node2).print_tree()
+    print get_balance_dept(root6)
+    
+    root6.delete(node4).print_tree()
+    print get_balance_dept(root6)
