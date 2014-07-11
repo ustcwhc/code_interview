@@ -1,6 +1,7 @@
 #!/usr/bin/python
 # filename: chapter4.py
 
+
 # TREE CLASS
 class Tree(object):
     def __init__(self, n):
@@ -8,7 +9,6 @@ class Tree(object):
         self.LeftChild = None
         self.RightChild = None
         self.Data = n
-
 
     def insert(self, node):
         # go to left
@@ -52,7 +52,7 @@ class Tree(object):
             node = node.LeftChild
         return node
 
-    def _find_rightmost(self):
+    def find_rightmost(self):
         node = self
         while node.RightChild:
             node = node.RightChild
@@ -101,7 +101,7 @@ class Tree(object):
 
             # has both left and right children: replace by left-rightmost node
             else:
-                left_rightmost_node = node.LeftChild._find_rightmost()
+                left_rightmost_node = node.LeftChild.find_rightmost()
                 if node.LeftChild == left_rightmost_node:
                     if left_or_right == 0:
                         node.Parent.LeftChild = node.LeftChild
@@ -113,15 +113,12 @@ class Tree(object):
                 else:
                     node.Data = left_rightmost_node.Data
                     return self.delete(left_rightmost_node)
-                
 
     def get_root(self):
         node = self
         while node.Parent:
             node = node.Parent
         return node
-
-
 
     def print_tree(self):
         if not self.Parent:
@@ -138,10 +135,12 @@ class Tree(object):
             self.RightChild.print_tree()
         print ')',
 
+
 # ENUM CLASS
 class VisitStates:
     UnVisited = '0'
     Visited = '1'
+
 
 # GRAPH CLASS
 class GraphNode(object):
@@ -172,7 +171,8 @@ def get_balance_dept(tree):
             return -1
 
         return max(left_dept, right_dept) + 1 
-            
+
+
 # PROBLEM 4.2
 # check whether two nodes has a route in a graph
 def has_route(all_nodes, start, end):
@@ -182,7 +182,7 @@ def has_route(all_nodes, start, end):
     for node in all_nodes:
         node.VisitState = VisitStates.UnVisited
 
-    queue = []
+    queue = {}
     queue.append(start)
 
     while len(queue) > 0:
@@ -201,12 +201,14 @@ def has_route(all_nodes, start, end):
 
 
 # PROBLEM 4.3
-# Given an asending array, create a binary tree with minimum height
+# Given an ascending array, create a binary tree with minimum height
 def create_tree_with_asc(asc_array):
     length = len(asc_array)
-    index_double_queue = []
+    index_double_queue = {}
     start = 0
     end = length - 1
+    if 1 > 3:
+        pass
 
 # MAIN FUNCTION
 if __name__ == '__main__':
