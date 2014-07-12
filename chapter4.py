@@ -9,6 +9,7 @@ class Tree(object):
         self.LeftChild = None
         self.RightChild = None
         self.Data = n
+        self.VisitState = VisitStates.UnVisited
 
     def insert(self, node):
         # go to left
@@ -182,7 +183,7 @@ def has_route(all_nodes, start, end):
     for node in all_nodes:
         node.VisitState = VisitStates.UnVisited
 
-    queue = {}
+    queue = []
     queue.append(start)
 
     while len(queue) > 0:
@@ -204,37 +205,141 @@ def has_route(all_nodes, start, end):
 # Given an ascending array, create a binary tree with minimum height
 def create_tree_with_asc(asc_array):
     length = len(asc_array)
-    index_double_queue = {}
-    start = 0
-    end = length - 1
-    if 1 > 3:
-        pass
+    left_right_queue = []
+    root = None
+    left_right_queue.append((0, length - 1))
+    while len(left_right_queue) > 0:
+        top = left_right_queue.pop(0)
+        if top[0] <= top[1]:
+            mid = (top[0] + top[1]) / 2
+            if not root:
+                root = Tree(asc_array[mid])
+            else:
+                root.insert(Tree(asc_array[mid]))
 
+            # append left and right
+            left_right_queue.append((top[0], mid - 1))
+            left_right_queue.append((mid + 1, top[1]))
+
+    return root
+
+
+# PROBLEM 4.4
+# given a binary search tree, design an algorithm to create a binary tree
+# which creats a linked list of all the nodes at each depth
+def get_list_of_depth(tree):
+    lists=[]
+    data_lists=[]
+    lists.append([tree])
+    data_lists.append([tree.Data])
+    while True:
+        list = []
+        for node in lists[len(lists) - 1]:
+            if node.LeftChild:
+                list.append(node.LeftChild)
+            if node.RightChild:
+                list.append(node.RightChild)
+
+        if len(list) > 0:
+            lists.append(list)
+            data_lists.append([node.Data for node in list])
+        else:
+            break
+    return data_lists
+
+
+# PROBLEM 4.5
+# Write an algorithm to find the 'next' node (i.e. in-order successor) of
+# a given node in a binary search tree where each node has a link to its parents
+def get_next_node(node):
+    print 'Next node of ' + str(node.Data) + 'is ',
+    if node.LeftChild:
+        return node.LeftChild
+    elif node.RightChild:
+        return node.RightChild
+    else:
+        parent = node.Parent
+        while (parent and
+                   (not parent.RightChild or
+                       parent.RightChild == node)
+                ):
+            node = parent
+            parent = parent.Parent
+        if parent:
+            return parent.RightChild
+        else:
+            return None
+
+
+# PROBLEM 4.6
+# Find the first common ancestor of two nodes.
+# Avoid storing additional nodes in data structure
+def get_common_ancestor(root, node1, node2):
+    if is_cover(root.LeftChild, node1) and is_cover(root.LeftChild, node2):
+        return get_common_ancestor(root.LeftChild, node1, node2)
+    elif is_cover(root.RightChild, node1) and is_cover((root.LeftChild, node2)):
+        return get_common_ancestor(root.RightChild, node1, node2)
+    else
+        return root
+
+def is_cover(root, node):
+    if not root:
+        return False
+
+    if root == node:
+        return True
+
+    is_covered = False
+    if root.LeftChild:
+        is_covered = is_cover(root.LeftChild, node)
+    if not is_covered and root.RightChild:
+        is_covered = is_cover(root.RightChild, node)
+    return is_covered
+
+
+# PROBLEM 4.7
+# Design algorithm to decide whether a small tree is a
+# subtree of a very large tree
+def is_sub_tree(small_tree, large_tree):
+    if not small_tree:
+        return True
+
+    if not large_tree:
+        return False
+
+    if small_tree.Data == large_tree.Data:
+        return match_tree(small_tree, large_tree)
+    else:
+        return is_sub_tree(small_tree, large_tree.LeftChild) or \
+                is_sub_tree(small_tree, large_tree.RightChild)
+
+def match_tree(tree1, tree2):
+    if not tree1 and not tree2:
+        return True
+
+    if not tree1 or not tree2:
+        return False
+
+    if tree1.Data != tree2.Data:
+        return False
+
+    return match_tree(tree1.LeftChild, tree2.LeftChild) and \
+            match_tree(tree1.RightChild, tree2.RightChild)
+
+
+
+# PROBLEM 
 # MAIN FUNCTION
 if __name__ == '__main__':
-    root6 = Tree(6)
-    node4 = Tree(4)
-    node8 = Tree(8)
-    node2 = Tree(2)
-    node5 = Tree(5)
-    node7 = Tree(7)
-    node9 = Tree(9)
-
-    root6.insert(node4)
-    root6.insert(node8)
-    root6.insert(node2)
-    root6.insert(node5)
-    root6.insert(node7)
-    root6.insert(node9)
-
-    root6.print_tree()
-    print get_balance_dept(root6)
-    
-    root6.delete(root6).print_tree()
-    print get_balance_dept(root6)
-
-    root6.delete(node2).print_tree()
-    print get_balance_dept(root6)
-    
-    root6.delete(node4).print_tree()
-    print get_balance_dept(root6)
+    asc_array = [i for i in range(10)]
+    tree = create_tree_with_asc(asc_array)
+    tree.print_tree()
+    print get_next_node(tree.find(0)).Data
+    print get_next_node(tree.find(1)).Data
+    print get_next_node(tree.find(2)).Data
+    print get_next_node(tree.find(3)).Data
+    print get_next_node(tree.find(4)).Data
+    print get_next_node(tree.find(5)).Data
+    print get_next_node(tree.find(6)).Data
+    print get_next_node(tree.find(8)).Data
+    print get_next_node(tree.find(9)).Data
