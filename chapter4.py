@@ -279,7 +279,7 @@ def get_common_ancestor(root, node1, node2):
         return get_common_ancestor(root.LeftChild, node1, node2)
     elif is_cover(root.RightChild, node1) and is_cover((root.LeftChild, node2)):
         return get_common_ancestor(root.RightChild, node1, node2)
-    else
+    else:
         return root
 
 def is_cover(root, node):
@@ -328,7 +328,7 @@ def match_tree(tree1, tree2):
 
 
 
-# PROBLEM 
+# PROBLEM
 # MAIN FUNCTION
 if __name__ == '__main__':
     asc_array = [i for i in range(10)]
