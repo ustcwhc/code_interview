@@ -1,7 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
+<<<<<<< HEAD
     <list default="true" id="e6ff7aa0-2dab-40c4-9151-973a3fb9bf36" name="Default" comment="" />
+=======
+    <list default="true" id="e6ff7aa0-2dab-40c4-9151-973a3fb9bf36" name="Default" comment="">
+<<<<<<< HEAD
+=======
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/chapter5.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/code_interview.iml" afterPath="$PROJECT_DIR$/.idea/code_interview.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/chapter4.py" afterPath="$PROJECT_DIR$/chapter4.py" />
+>>>>>>> 38819f200d83272de8420564ab1c05ebec991088
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+    </list>
+>>>>>>> 585027744ca0d714223f72466a4aadbd7e6892c4
     <ignored path="code_interview.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -26,8 +38,18 @@
       <file leaf-file-name="chapter5.py" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/chapter5.py">
           <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
             <state vertical-scroll-proportion="0.26760563" vertical-offset="0" max-vertical-offset="3990">
               <caret line="9" column="18" selection-start-line="9" selection-start-column="18" selection-end-line="9" selection-end-column="18" />
+=======
+<<<<<<< HEAD
+            <state vertical-scroll-proportion="-0.67471147" vertical-offset="3721" max-vertical-offset="4674">
+              <caret line="162" column="25" selection-start-line="162" selection-start-column="25" selection-end-line="162" selection-end-column="25" />
+=======
+            <state vertical-scroll-proportion="0.26760563" vertical-offset="2793" max-vertical-offset="3990">
+              <caret line="156" column="0" selection-start-line="156" selection-start-column="0" selection-end-line="156" selection-end-column="0" />
+>>>>>>> 38819f200d83272de8420564ab1c05ebec991088
+>>>>>>> 585027744ca0d714223f72466a4aadbd7e6892c4
               <folding />
             </state>
           </provider>
@@ -354,7 +376,11 @@
       <created>1405068929893</created>
       <updated>1405068929893</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="First commit by using pycharm">
+      <created>1405070096998</created>
+      <updated>1405070096998</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -430,6 +456,10 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/chapter4.py">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
+        <state vertical-scroll-proportion="-0.67471147" vertical-offset="3721" max-vertical-offset="4674">
+          <caret line="162" column="25" selection-start-line="162" selection-start-column="25" selection-end-line="162" selection-end-column="25" />
+=======
         <state vertical-scroll-proportion="0.0" vertical-offset="2055" max-vertical-offset="3690">
           <caret line="137" column="0" selection-start-line="137" selection-start-column="0" selection-end-line="137" selection-end-column="0" />
         </state>
@@ -444,8 +474,14 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/chapter5.py">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
         <state vertical-scroll-proportion="0.26760563" vertical-offset="0" max-vertical-offset="3990">
           <caret line="9" column="18" selection-start-line="9" selection-start-column="18" selection-end-line="9" selection-end-column="18" />
+=======
+        <state vertical-scroll-proportion="0.26760563" vertical-offset="2793" max-vertical-offset="3990">
+          <caret line="156" column="0" selection-start-line="156" selection-start-column="0" selection-end-line="156" selection-end-column="0" />
+>>>>>>> 38819f200d83272de8420564ab1c05ebec991088
+>>>>>>> 585027744ca0d714223f72466a4aadbd7e6892c4
           <folding />
         </state>
       </provider>
