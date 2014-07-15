@@ -251,3 +251,68 @@ class MusicBox(object):
         music = self.__music_list.get_select_music()
         if music:
             self.__player.set_music(music)
+
+
+# PROBLEM 7.4
+# Design a chess game using object oriented principles
+class Chessman(object):
+    def __init__(self, value, x, y):
+        self.Value = value
+        self.X = x
+        self.Y = y
+        self.Player = None
+
+    def move(self, target_x, target_y):
+        if self.is_valid_move(target_x, target_y):
+            self.X = target_x
+            self.Y = target_y
+
+    # this function has to be override in the subclass
+    def is_valid_move(self, target_x, target_y):
+        return False
+
+
+class Chessman_King(object):
+    def __init__(self, value, x, y):
+        Chessman.__init__(self, value, x, y)
+
+
+class ChessPlayer(object):
+    def __init__(self, name):
+        self.Name = name
+        self.Chessmen = []
+
+    def set_chessmen(self, chessmen):
+        self.Chessmen = chessmen
+        for chessman in chessmen:
+            chessman.Player = self
+
+    def get_chessman(self, x, y):
+        for chessman in self.Chessmen:
+            if chessman.X == x and chessman.Y == y:
+                return chessman
+        return None
+
+    def move(self, x, y, target_x, target_y, opponent):
+        # get original chessman
+        chessman = self.get_chessman(x, y)
+        if not chessman:
+            return False
+
+        # check whether there is already a chessman of his own
+        target_chessman = self.get_chessman(target_x, target_y)
+        if target_chessman and target_chessman.Player == self:
+            return False
+
+        if chessman.move(target_x, target_y, opponent):
+            opponent_chessman = opponent.get_chessman(target_x, target_y)
+            if opponent_chessman:
+                opponent.remove(opponent_chessman)
+
+    def concede(self):
+        pass
+
+    def remove(self, chessman):
+        self.Chessmen.remove(chessman)
+        if type(chessman) == Chessman_King:
+            self.concede()
