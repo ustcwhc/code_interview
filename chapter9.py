@@ -287,7 +287,37 @@ def sort_bi_numbers(bi_numbers):
                    sorted(bi_numbers_wit_ids.iteritems(),
                           key=lambda kv: kv[1][1])]
 
+    lcs_items = get_lcs(first_sort, second_sort)
+    for id in lcs_items:
+        print bi_numbers_wit_ids[int(id)]
+
+
 def get_lcs(array1, array2):
+    # use array1 to be the column
+    # use array2 to be the row
+    counts = [(0, '')] * len(array2)
+    max_common_len = 0
+    max_common_substr = ''
+
+    for item1 in array1:
+        for i in reversed(range(len(array2))):
+            if item1 == array2[i]:
+                if i <= 0:
+                    counts[i] = (1, str(item1))
+                else:
+                    counts[i] = (
+                        counts[i - 1][0] + 1,
+                        (counts[i - 1][1] + '-' + str(item1)).strip('-')
+                    )
+                if counts[i][0] > max_common_len:
+                    max_common_substr = counts[i][1]
+                    max_common_len = counts[i][0]
+            # if you want to get the longest common substring
+            # just comment these two lines
+            #else:
+            #    counts[i] = (0, '')
+
+    return max_common_substr.split('-')
 
 
 
@@ -297,5 +327,5 @@ def get_lcs(array1, array2):
 
 # MAIN FUNCTION
 if __name__ == '__main__':
-    matrix = [[1, 4.5, 6, 7], [3, 5, 10, 12], [4, 7, 11, 15]]
-    print find_in_matrix(matrix, 6)
+    binumbers = [(65, 100), (70, 150), (56, 100), (75, 190), (60, 95), (68, 110)]
+    sort_bi_numbers(binumbers)
